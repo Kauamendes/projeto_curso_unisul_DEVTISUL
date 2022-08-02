@@ -12,10 +12,15 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class TelaListarNotaServico extends JFrame {
 
 	private JPanel contentPane;
+	private JTable table;
 
 	/**
 	 * Launch the application.
@@ -55,10 +60,17 @@ public class TelaListarNotaServico extends JFrame {
 		JScrollPane scrollPane = new JScrollPane();
 		
 		JButton btnCadastroDeNota = new JButton("Cadastro de Nota de Servi\u00E7o");
+		btnCadastroDeNota.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TelaCadastroNotaServico tcns = new TelaCadastroNotaServico();
+				tcns.setVisible(true);
+				dispose();
+			}
+		});
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+			gl_contentPane.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap(20, Short.MAX_VALUE)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane.createSequentialGroup()
@@ -68,11 +80,9 @@ public class TelaListarNotaServico extends JFrame {
 							.addComponent(botaoExcluir, GroupLayout.PREFERRED_SIZE, 63, GroupLayout.PREFERRED_SIZE))
 						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 394, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(245)
-							.addComponent(btnCadastroDeNota, GroupLayout.PREFERRED_SIZE, 149, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGap(43)
-							.addComponent(lblGerenciamentoDeNotas, GroupLayout.PREFERRED_SIZE, 272, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(lblGerenciamentoDeNotas, GroupLayout.PREFERRED_SIZE, 272, GroupLayout.PREFERRED_SIZE))
+						.addComponent(btnCadastroDeNota, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 197, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
@@ -90,6 +100,25 @@ public class TelaListarNotaServico extends JFrame {
 					.addComponent(btnCadastroDeNota)
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
+		
+		table = new JTable();
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Id", "Dias alugados", "Valor", "Modelo", "Cliente"
+			}
+		) {
+			boolean[] columnEditables = new boolean[] {
+				false, true, true, true, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		table.getColumnModel().getColumn(0).setPreferredWidth(77);
+		table.getColumnModel().getColumn(1).setPreferredWidth(86);
+		scrollPane.setViewportView(table);
 		contentPane.setLayout(gl_contentPane);
 	}
 

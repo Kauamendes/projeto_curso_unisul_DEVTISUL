@@ -6,24 +6,36 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import Core.Entity.ClienteEntity;
+import Core.Entity.FuncionarioEntity;
+import Core.Exception.RegraNegocioException;
+import Core.Service.ClientService;
+import Core.Service.FuncionarioService;
+import View.clientes.telaListarCliente;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.Font;
+import java.awt.HeadlessException;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class TelaCadastroFuncionario extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
+	private JTextField textFieldCPF;
+	private JTextField textFieldNome;
+	private JTextField textFieldEmail;
+	private JTextField textFieldTelefone;
+	private JTextField TextId;
+	private JTextField textFieldSalario;
 
 	/**
 	 * Launch the application.
@@ -62,6 +74,40 @@ public class TelaCadastroFuncionario extends JFrame {
 		JButton botaoVoltar = new JButton("Voltar");
 		
 		JButton btnNewButton = new JButton("Cadastrar");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				FuncionarioEntity funcionario = new FuncionarioEntity();
+				funcionario.setId(Long.parseLong(TextId.getText()));
+				funcionario.setNome(textFieldNome.getText());
+				funcionario.setCPF(textFieldCPF.getText());
+				funcionario.setEmail(textFieldEmail.getText());
+				funcionario.setTelefone(textFieldTelefone.getText());
+				funcionario.setSalario(Double.parseDouble(textFieldSalario.getText()));
+				FuncionarioService service = new FuncionarioService();
+				
+				if(funcionario.getId() != null) { 
+					try {
+						JOptionPane.showMessageDialog(null, service.atualizarFuncionario(funcionario));
+					} catch (HeadlessException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (RegraNegocioException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} else {
+					try {
+						JOptionPane.showMessageDialog(null, service.salvarFuncionario(funcionario));
+					} catch (RegraNegocioException e1) {
+						e1.getMessage();
+					}
+				}
+					
+				telaListarCliente tlc = new telaListarCliente();
+				tlc.setVisible(true);
+				dispose();
+			}
+		});
 		
 		JLabel lblNewLabel_4 = new JLabel("Telefone");
 		
@@ -73,27 +119,27 @@ public class TelaCadastroFuncionario extends JFrame {
 		
 		JLabel lblNewLabel_6 = new JLabel("C\u00F3digo");
 		
-		textField = new JTextField();
-		textField.setColumns(10);
+		textFieldCPF = new JTextField();
+		textFieldCPF.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
+		textFieldNome = new JTextField();
+		textFieldNome.setColumns(10);
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
+		textFieldEmail = new JTextField();
+		textFieldEmail.setColumns(10);
 		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
+		textFieldTelefone = new JTextField();
+		textFieldTelefone.setColumns(10);
 		
-		textField_4 = new JTextField();
-		textField_4.setEnabled(false);
-		textField_4.setEditable(false);
-		textField_4.setColumns(10);
+		TextId = new JTextField();
+		TextId.setEnabled(false);
+		TextId.setEditable(false);
+		TextId.setColumns(10);
 		
 		JLabel lblNewLabel_4_1 = new JLabel("Sal\u00E1rio");
 		
-		textField_5 = new JTextField();
-		textField_5.setColumns(10);
+		textFieldSalario = new JTextField();
+		textFieldSalario.setColumns(10);
 		GroupLayout gl_contentPane_1 = new GroupLayout(contentPane_1);
 		gl_contentPane_1.setHorizontalGroup(
 			gl_contentPane_1.createParallelGroup(Alignment.LEADING)
@@ -115,18 +161,18 @@ public class TelaCadastroFuncionario extends JFrame {
 					.addGroup(gl_contentPane_1.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane_1.createSequentialGroup()
 							.addGroup(gl_contentPane_1.createParallelGroup(Alignment.LEADING)
-								.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(textField_1, GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
-								.addComponent(textField_2, GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
+								.addComponent(textFieldCPF, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(textFieldNome, GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
+								.addComponent(textFieldEmail, GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
 								.addGroup(gl_contentPane_1.createSequentialGroup()
-									.addComponent(textField_3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addComponent(textFieldTelefone, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 									.addGap(18)
 									.addComponent(lblNewLabel_4_1, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(textField_5, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+									.addComponent(textFieldSalario, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 							.addGap(25))
 						.addGroup(gl_contentPane_1.createSequentialGroup()
-							.addComponent(textField_4, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)
+							.addComponent(TextId, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)
 							.addContainerGap())))
 				.addGroup(Alignment.TRAILING, gl_contentPane_1.createSequentialGroup()
 					.addContainerGap(147, Short.MAX_VALUE)
@@ -140,28 +186,28 @@ public class TelaCadastroFuncionario extends JFrame {
 					.addGap(26)
 					.addGroup(gl_contentPane_1.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblNewLabel_6)
-						.addComponent(textField_4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(TextId, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPane_1.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblNewLabel_1)
-						.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(textFieldNome, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(9)
 					.addGroup(gl_contentPane_1.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblNewLabel_2)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(textFieldCPF, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(12)
 					.addGroup(gl_contentPane_1.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblNewLabel_3)
-						.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(textFieldEmail, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(9)
 					.addGroup(gl_contentPane_1.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane_1.createSequentialGroup()
 							.addGap(3)
 							.addComponent(lblNewLabel_4))
 						.addGroup(gl_contentPane_1.createParallelGroup(Alignment.BASELINE)
-							.addComponent(textField_3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(textFieldTelefone, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addComponent(lblNewLabel_4_1)
-							.addComponent(textField_5, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(textFieldSalario, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(gl_contentPane_1.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnNewButton)

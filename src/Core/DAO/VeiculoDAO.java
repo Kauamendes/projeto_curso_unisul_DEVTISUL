@@ -90,7 +90,7 @@ public class VeiculoDAO {
 	public List<VeiculoEntity> listarVeiculos() {
 		List<VeiculoEntity> veiculos = new ArrayList<VeiculoEntity>();
 		Connection con = ConexaoBancoMySql.getConexao();
-		String sql = "SELECT id,nome,cpf,telefone,email,salario FROM funcionario" ;
+		String sql = "SELECT id,marca,modelo,cor,placa FROM veiculo" ;
 		
 		PreparedStatement stmt;
 		try {
@@ -99,6 +99,11 @@ public class VeiculoDAO {
 			
 			while(rs.next()) {
 				VeiculoEntity v = new VeiculoEntity();
+				v.setId(rs.getLong("id"));
+				v.setMarca(rs.getString("marca"));
+				v.setModelo(rs.getString("modelo"));
+				v.setCor(rs.getString("cor"));
+				v.setPlaca(rs.getString("placa"));
 				veiculos.add(v);
 				
 			}
@@ -115,7 +120,7 @@ public class VeiculoDAO {
 	public VeiculoEntity buscarPorId(Long id) {
 		VeiculoEntity veiculo = new VeiculoEntity();
 		Connection con = ConexaoBancoMySql.getConexao();
-		String sql = "SELECT id,nome,cpf,telefone,email,salario FROM funcionario WHERE id=?";
+		String sql = "SELECT id,marca,modelo,placa,cor,carteira_exigida,valor_diaria,lugares,alugado FROM veiculo WHERE id=?";
 		
 		PreparedStatement stmt;
 		try {
@@ -124,6 +129,13 @@ public class VeiculoDAO {
 			ResultSet rs = stmt.executeQuery();
 			
 			if(rs.next()) {
+				veiculo.setModelo(rs.getString("modelo"));
+				veiculo.setMarca(rs.getString("marca"));
+				veiculo.setPlaca(rs.getString("placa"));
+				veiculo.setCor(rs.getString("cor"));
+				veiculo.setCarteiraExigida(rs.getString("carteira_exigida"));
+				veiculo.setLugares(rs.getInt("lugares"));
+				veiculo.setValorDiaria(rs.getDouble("valor_diaria"));
 				
 			}
 			stmt.close();
